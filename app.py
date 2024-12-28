@@ -53,11 +53,11 @@ def upload_files():
     data =  df[['SrNo', 'Overall Match' , 'Final Remarks']].to_dict(orient='records')
     for row in data:
         if isinstance(row['Overall Match'], float) and math.isnan(row['Overall Match']):
-            row['Overall Match'] = row['Final Remarks']
+            row['Overall Match'] = "False"
         elif row['Overall Match'] is False:
-            row['Overall Match'] = "The aadhar does not match the one in the database"
+            row['Overall Match'] = "False"
         else:
-            row['Overall Match']  ="The aadhar matches the one in the database"
+            row['Overall Match']  ="True"
     return render_template('process.html',data=data)
     
 
