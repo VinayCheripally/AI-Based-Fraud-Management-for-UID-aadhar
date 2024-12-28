@@ -34,7 +34,6 @@ def upload_files():
         if verify == "aadhar":
             extracted_data = text(photo_path)
             if 'address' in extracted_data and 'name' in extracted_data and 'uid' in extracted_data:
-                print(extracted_data['address'])
                 input_name = df.loc[df['SrNo']==srno,'Name'].values[0]
                 input_address = (
                     str(df.loc[df['SrNo'] == srno, 'House Flat Number'].values[0]) +" "+
@@ -45,21 +44,20 @@ def upload_files():
                     str(df.loc[df['SrNo'] == srno, 'Premise Building Name'].values[0]) + " "+ 
                     str(df.loc[df['SrNo'] == srno, 'PINCODE'].values[0])
                         )
-                print(input_address)
                 input_uid = int(df.loc[df['SrNo']==srno,'UID'].values[0])
                 df.loc[df['SrNo']==srno,'Overall Match'] = overall_match(input_name,extracted_data['name'],input_address,extracted_data['address'],input_uid,int(extracted_data['uid'].replace(" ","")))
             else:
                 df.loc[df['SrNo']==srno,"Final Remarks"] = "Given photo is does not have all the details"
         else:
             df.loc[df['SrNo']==srno,"Final Remarks"] = "Given photo is not a Aadhar"
-    data =  df[['SrNo', 'Overall Match']].to_dict(orient='records')
+    data =  df[['SrNo', 'Overall Match' , 'Final Remarks']].to_dict(orient='records')
     for row in data:
         if isinstance(row['Overall Match'], float) and math.isnan(row['Overall Match']):
-            row['Overall Match'] = "N/A"
+            row['Overall Match'] = row['Final Remarks']
         elif row['Overall Match'] is False:
-            row['Overall Match'] = "No"
+            row['Overall Match'] = "The aadhar does not match the one in the database"
         else:
-            row['Overall Match']  ="Yes"
+            row['Overall Match']  ="The aadhar matches the one in the database"
     return render_template('process.html',data=data)
     
 
