@@ -1,0 +1,7 @@
+train: C:\workarea\infosys\objdetect\train\images
+val: C:\workarea\infosys\objdetect\val\images
+
+names:
+  0: name
+  1: uid
+  2: address
